@@ -1,0 +1,35 @@
+{
+  "users": {
+    "masterUser": "5511963939322",
+    "allowedUsers": [
+      "5511964945942"
+    ]
+  },
+  "groups": {
+    "targetGroupId": "",
+    "hostGroupId": "",
+    "targetGroupLink": ""
+  },
+  "links": {
+    "linkMode": true,
+    "linkMessage": "hi"
+  },
+  "cloning": {
+    "cloningDelay": 0,
+    "cloningContactsToAddPerDelay": 0,
+    "cloningContacts": [
+      ""
+    ],
+    "delay": 30
+  },
+  "logsConfig": {
+    "logMode": false,
+    "logGroupId": ""
+  },
+  "logs": [
+    {
+      "logDate": "",
+      "logMessage": ""
+    }
+  ]
+}
