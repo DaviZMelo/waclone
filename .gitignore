@@ -1,0 +1,12 @@
+node_modules
+.idea/
+.vscode
+yarn-error.log
+tmp/*
+!tmp/.gitkeep
+dist
+session.data.json
+yarn.lock
+**.data.json
+**.node-persist**
+coverage
