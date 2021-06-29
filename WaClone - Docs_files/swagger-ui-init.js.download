@@ -1,0 +1,860 @@
+
+window.onload = function() {
+  // Build a system
+  var url = window.location.search.match(/url=([^&]+)/);
+  if (url && url.length > 1) {
+    url = decodeURIComponent(url[1]);
+  } else {
+    url = window.location.origin;
+  }
+  var options = {
+  "swaggerDoc": {
+    "openapi": "3.0.1",
+    "info": {
+      "version": "1.0.0",
+      "title": "WaClone",
+      "description": "📱 | Documentation of an API/bot made to clone Whatsapp groups."
+    },
+    "servers": [
+      {
+        "url": "http://localhost:4000/",
+        "description": "Local server"
+      }
+    ],
+    "paths": {
+      "/admin/groups": {
+        "get": {
+          "description": "Get the list of groups.",
+          "operationId": "getGroups",
+          "tags": [
+            "Groups"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "admin_groups",
+              "schema": {
+                "type": "boolean"
+              },
+              "description": "Defines whether to return all groups or just the group in which the bot is an admin.",
+              "example": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return the groups.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Group"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not possible to get admin groups, try again.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "Not possible to get admin groups, try again."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/groups/selected": {
+        "get": {
+          "description": "Get the id list of selected groups.",
+          "operationId": "getSelectedGroups",
+          "tags": [
+            "Groups"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the id of selected groups.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Groups"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/groups/selected/": {
+        "post": {
+          "description": "Defines the groups that will be used in the bot.",
+          "operationId": "setSelectedGroups",
+          "tags": [
+            "Groups"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "targetGroupId",
+                    "hostGroupId"
+                  ],
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Groups"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "targetGroupLink": {
+                          "type": "string",
+                          "example": "https://chat.whatsapp.com/abcde"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Groups have been successfully defined."
+            },
+            "401": {
+              "description": "You have been removed from this group previously.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "You have been removed from this group previously."
+                  }
+                }
+              }
+            },
+            "406": {
+              "description": "Invalid group link.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "Invalid group link."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/users": {
+        "post": {
+          "description": "Defines the list of users allowed to use the bot.",
+          "operationId": "setAllowedUsers",
+          "tags": [
+            "Users"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllowedUsers"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "The allowed users list has been setted"
+            },
+            "400": {
+              "description": "Invalid phone number",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "Invalid phone number"
+                  }
+                }
+              }
+            },
+            "406": {
+              "description": "Maximum users limit reached",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "Maximum users limit reached"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Duplicate numbers is not allowed",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "Duplicate numbers is not allowed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/users/": {
+        "get": {
+          "description": "Get the list of users allowed to use the bot.",
+          "operationId": "getAllowedUsers",
+          "tags": [
+            "Users"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the list of allowed users.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AllowedUsers"
+                  },
+                  "example": [
+                    5511964945942
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/users/master": {
+        "post": {
+          "description": "Defines the master user who can manage users.",
+          "operationId": "setMasterUser",
+          "tags": [
+            "Users"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "phone",
+              "schema": {
+                "type": "integer"
+              },
+              "example": 5511964945942,
+              "description": "The master user's phones number"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The master user has been defined"
+            },
+            "406": {
+              "description": "Informed master user is not an existing allowed user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "Informed master user is not an existing allowed user"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/users/master/": {
+        "get": {
+          "description": "Get the master user.",
+          "operationId": "getMasterUser",
+          "tags": [
+            "Users"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the master user.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AllowedUser"
+                  },
+                  "example": 5511964945942
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/logs": {
+        "get": {
+          "description": "Get the logs.",
+          "operationId": "getLogs",
+          "tags": [
+            "Logs"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns error logs when adding members to groups.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Logs"
+                  },
+                  "example": [
+                    {
+                      "logDate": "25/06/21 22:14",
+                      "logMessage": "Could not add number(s) 5511964945942 to group, check if I have administrator, if member has group addition disabled or if he has blocked me."
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/links/mode": {
+        "get": {
+          "description": "Gets whether the bot sends links or will add contacts to groups.",
+          "operationId": "getLinkMode",
+          "tags": [
+            "Links"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the link mode.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LinkMode"
+                  },
+                  "example": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/links/mode/": {
+        "post": {
+          "description": "Defines whether the bot will send links or add contacts.",
+          "operationId": "setLinkMode",
+          "tags": [
+            "Links"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "linkMode",
+              "schema": {
+                "type": "boolean"
+              },
+              "example": true,
+              "description": "The link mode."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The link mode has been setted."
+            }
+          }
+        }
+      },
+      "/admin/links/message": {
+        "get": {
+          "description": "Gets the message that accompanies the sending of the link, if link mode is enabled.",
+          "operationId": "getLinkMessage",
+          "tags": [
+            "Links"
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the link message",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#components/schemas/LinkMessage"
+                  },
+                  "example": "Hi, join in my group!"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/links/message/": {
+        "post": {
+          "description": "Defines the message that accompanies the sending of the link to contacts, if link mode is enabled..",
+          "operationId": "setLinkMessage",
+          "tags": [
+            "Links"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "linkMessage": {
+                      "$ref": "#/components/schemas/LinkMessage"
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "The link message has been setted"
+            }
+          }
+        }
+      },
+      "/admin/cloning": {
+        "post": {
+          "description": "Start the group cloning",
+          "operationId": "startCloning",
+          "tags": [
+            "Cloning"
+          ],
+          "responses": {
+            "200": {
+              "description": "The group cloning has been started"
+            },
+            "404": {
+              "description": "The settings have not yet been set.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "The settings have not yet been set."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/cloning/": {
+        "delete": {
+          "description": "Stop the group cloning",
+          "operationId": "stopCloning",
+          "tags": [
+            "Cloning"
+          ],
+          "responses": {
+            "200": {
+              "description": "The group cloning has been stopped"
+            },
+            "409": {
+              "description": "There is no group cloning running",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "There is no group cloning running"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/contacts": {
+        "get": {
+          "description": "Get the list of contacts.",
+          "operationId": "getContacts",
+          "tags": [
+            "Contacts"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "type",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "download",
+                  "sendByMessage"
+                ]
+              },
+              "example": "download",
+              "description": "Define if the bot should send the contacts via message or if it should return a string from the VCard"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return contact list or just status code 200 if type is sendByMessage",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/VCard"
+                      },
+                      {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Settings have not yet been set.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "Settings have not yet been set."
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "The type entered is invalid.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "status": "error",
+                    "message": "The type entered is invalid."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/configs": {
+        "get": {
+          "description": "Get all settings from bot.",
+          "operationId": "getConfigs",
+          "tags": [
+            "Configs"
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a list of settings",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "required": [],
+                    "$ref": "#/components/schemas/Configs"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/configs/": {
+        "post": {
+          "description": "Set api configs.",
+          "operationId": "postConfigs",
+          "tags": [
+            "Configs"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [],
+                  "$ref": "#/components/schemas/Configs"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Settings have been successfully configured.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "required": [],
+                    "$ref": "#/components/schemas/Configs"
+                  }
+                }
+              }
+            },
+            "406": {
+              "description": "Invalid values entered",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Error",
+                        "example": {
+                          "status": "error",
+                          "message": "Invalid delay"
+                        }
+                      },
+                      {
+                        "$ref": "#/components/schemas/Error",
+                        "example": {
+                          "status": "error",
+                          "message": "Invalid number of contacts to add per second"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Error": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "AllowedUsers": {
+          "type": "array",
+          "example": [
+            5511964945942,
+            5511964945943
+          ],
+          "items": {
+            "type": "integer"
+          }
+        },
+        "AllowedUser": {
+          "type": "integer",
+          "example": 5511964945942
+        },
+        "LinkMode": {
+          "type": "boolean",
+          "example": true
+        },
+        "LinkMessage": {
+          "type": "string",
+          "example": "Hi, join in my group!"
+        },
+        "Logs": {
+          "type": "array",
+          "example": [
+            {
+              "logDate": "25/06/21 22:14",
+              "logMessage": "Error on add 11964945942"
+            }
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "logDate": {
+                "type": "string"
+              },
+              "logMessage": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "VCard": {
+          "type": "string",
+          "example": "BEGIN:VCARD\n  VERSION:3.0\n  N:;5511964945942;;;\n  FN:5511964945942\n  TEL;type=CELL;waid=5511964945942:5511964945942\n  END:VCARD"
+        },
+        "Group": {
+          "type": "string",
+          "example": "5511964945942-1606444973@g.us"
+        },
+        "Groups": {
+          "type": "object",
+          "properties": {
+            "targetGroupId": {
+              "$ref": "#/components/schemas/Group"
+            },
+            "hostGroupId": {
+              "$ref": "#/components/schemas/Group"
+            }
+          }
+        },
+        "Configs": {
+          "type": "object",
+          "properties": {
+            "users": {
+              "type": "object",
+              "example": {
+                "masterUser": "5511964945942",
+                "allowedUsers": [
+                  5511964945942,
+                  5511964945943
+                ]
+              },
+              "properties": {
+                "masterUser": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "allowedUsers": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              }
+            },
+            "groups": {
+              "type": "object",
+              "properties": {
+                "targetGroupId": {
+                  "$ref": "#/components/schemas/Group"
+                },
+                "hostGroupId": {
+                  "$ref": "#/components/schemas/Group"
+                },
+                "targetGroupLink": {
+                  "type": "string",
+                  "example": "https://chat.whatsapp.com/abcdef"
+                }
+              }
+            },
+            "links": {
+              "type": "object",
+              "properties": {
+                "linkMode": {
+                  "$ref": "#/components/schemas/LinkMode"
+                },
+                "linkMessage": {
+                  "$ref": "#/components/schemas/LinkMessage"
+                }
+              }
+            },
+            "cloning": {
+              "properties": {
+                "cloningDelay": {
+                  "type": "number",
+                  "example": 10
+                },
+                "cloningContactsToAddPerDelay": {
+                  "type": "number",
+                  "example": 10
+                },
+                "cloningContacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "logsConfigs": {
+              "type": "object",
+              "properties": {
+                "logGroupId": {
+                  "$ref": "#/components/schemas/LinkMessage"
+                },
+                "logMode": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            },
+            "logs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Logs"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "customOptions": {
+    "plugins": [
+      {
+        "statePlugins": {
+          "spec": {
+            "wrapSelectors": {
+              "allowTryItOutFor": function () { return function () { return false; }; }
+            }
+          }
+        }
+      }
+    ]
+  }
+};
+  url = options.swaggerUrl || url
+  var urls = options.swaggerUrls
+  var customOptions = options.customOptions
+  var spec1 = options.swaggerDoc
+  var swaggerOptions = {
+    spec: spec1,
+    url: url,
+    urls: urls,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  }
+  for (var attrname in customOptions) {
+    swaggerOptions[attrname] = customOptions[attrname];
+  }
+  var ui = SwaggerUIBundle(swaggerOptions)
+
+  if (customOptions.oauth) {
+    ui.initOAuth(customOptions.oauth)
+  }
+
+  if (customOptions.authAction) {
+    ui.authActions.authorize(customOptions.authAction)
+  }
+
+  window.ui = ui
+}
