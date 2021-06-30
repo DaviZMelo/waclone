@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import TasksController from '../controllers/CloningController';
+import CloningController from '../controllers/CloningController';
 
-const tasksRouter = Router();
-const tasksController = new TasksController();
+const cloningRouter = Router();
+const cloningController = new CloningController();
 
-tasksRouter.post('/', tasksController.create);
+cloningRouter.post('/', cloningController.create);
+cloningRouter.delete('/', cloningController.delete);
 
-export default tasksRouter;
+export default cloningRouter;
