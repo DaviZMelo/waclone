@@ -89,8 +89,6 @@ export default class WaAutomateProvider implements IWhatsappProvider {
     });
   }
 
-  // Functions
-
   public async addParticipant(
     groupId: IGroupIDDTO,
     participantID: IContactIDDTO | Array<IContactIDDTO>,
