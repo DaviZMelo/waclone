@@ -1,9 +1,7 @@
 {
   "users": {
-    "masterUser": "5511963939322",
-    "allowedUsers": [
-      "5511964945942"
-    ]
+    "masterUser": "",
+    "allowedUsers": []
   },
   "groups": {
     "targetGroupId": "",
@@ -11,25 +9,28 @@
     "targetGroupLink": ""
   },
   "links": {
-    "linkMode": true,
-    "linkMessage": "hi"
+    "linkMode": false,
+    "linkMessage": ""
   },
   "cloning": {
-    "cloningDelay": 0,
-    "cloningContactsToAddPerDelay": 0,
-    "cloningContacts": [
-      ""
-    ],
-    "delay": 30
+    "cloningDelay": 10,
+    "cloningContactsToAddPerDelay": 10,
+    "cloningContacts": []
   },
   "logsConfig": {
     "logMode": false,
     "logGroupId": ""
   },
   "logs": [
-    {
-      "logDate": "",
-      "logMessage": ""
-    }
-  ]
+    [
+      {
+        "logDate": "",
+        "logMessage": ""
+      }
+    ]
+  ],
+  "logsConfigs": {
+    "logGroupId": "",
+    "logMode": true
+  }
 }
