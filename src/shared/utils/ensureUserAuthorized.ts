@@ -1,9 +1,9 @@
 export default function ensureUserAuthorized(
-  userId: string,
-  allowedUsers: Array<string>,
-  masterUser: string,
+  userId: number,
+  allowedUsers: Array<number>,
+  masterUser: number,
 ): boolean {
-  const isAllowedUser = allowedUsers.includes(userId.toString());
+  const isAllowedUser = allowedUsers.includes(userId);
 
   const isMasterUser = userId === masterUser;
 
