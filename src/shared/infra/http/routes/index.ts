@@ -16,6 +16,6 @@ routes.use('/admin/logs', logsRouter);
 routes.use('/admin/links', linksRouter);
 routes.use('/admin/users', usersRouter);
 routes.use('/admin/contacts', contactsRouter);
-routes.use('/admin/tasks', cloningRouter);
+routes.use('/admin/cloning', cloningRouter);
 
 export default routes;
