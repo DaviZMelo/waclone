@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'dotenv/config';
 import { Server } from 'socket.io';
 import { container } from 'tsyringe';
 import WhatsappSocketEvent from './handlers/events/StartWhatsapp';

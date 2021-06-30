@@ -4,6 +4,7 @@ import IWhatsappProvider from '@shared/container/providers/WhatsappProvider/mode
 import { container, inject, injectable } from 'tsyringe';
 import IJSONDBProvider from '@shared/container/providers/JSONDBProvider/models/IJSONDBProvider';
 import WaError from '@shared/errors/WaError';
+import { Message } from '@open-wa/wa-automate';
 
 @injectable()
 export default class HandleWhatsappMessage {
@@ -17,8 +18,7 @@ export default class HandleWhatsappMessage {
 
   public async execute() {
     const handleCommands = new HandleCommandsController().create;
-
-    this.whatsappProvider.onMessage(async message => {
+    const handleMessage = async (message: Message) => {
       this.whatsappProvider.message = message;
       container.registerInstance<IWhatsappProvider>(
         'whatsappProvider',
@@ -49,6 +49,14 @@ export default class HandleWhatsappMessage {
           });
         }
       }
-    });
+    };
+
+    if (process.env.AMBIENT === 'DEV') {
+      this.whatsappProvider.onAnyMessage(async message =>
+        handleMessage(message),
+      );
+    } else {
+      this.whatsappProvider.onMessage(async message => handleMessage(message));
+    }
   }
 }
