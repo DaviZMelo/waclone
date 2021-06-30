@@ -23,21 +23,21 @@ describe('AddAllowedUsers', () => {
   });
 
   it('should be able to add a allowed user', async () => {
-    await addAllowedUsers.execute('5521995342960');
+    await addAllowedUsers.execute(5511964945942);
 
     const allowedUsers = await fakeJsonDBProvider.getAllowedUsers();
-    expect(allowedUsers).toEqual(expect.arrayContaining(['5521995342960']));
+    expect(allowedUsers).toEqual(expect.arrayContaining([5511964945942]));
   });
 
   it('should be able to add a allowed user with invalid phone', async () => {
-    await expect(addAllowedUsers.execute('')).rejects.toBeInstanceOf(WaError);
+    await expect(addAllowedUsers.execute(0)).rejects.toBeInstanceOf(WaError);
   });
 
   it('should not be able to add a allowed user if your phone is already registered', async () => {
-    await fakeJsonDBProvider.addAllowedUser('5511964945942');
+    await fakeJsonDBProvider.addAllowedUser(5511964945942);
 
-    await expect(
-      addAllowedUsers.execute('5511964945942'),
-    ).rejects.toBeInstanceOf(WaError);
+    await expect(addAllowedUsers.execute(5511964945942)).rejects.toBeInstanceOf(
+      WaError,
+    );
   });
 });

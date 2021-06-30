@@ -13,7 +13,7 @@ let fakeStorageProvider: FakeStorageProvider;
 let listContacts: ListContactsService;
 
 describe('GetContacts', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     fakeWhatsappProvider = new FakeWhatsappProvider();
     fakeJsonDBProvider = new FakeJsonDBProvider();
     fakeVCardProvider = new FakeVCardProvider();
@@ -24,6 +24,8 @@ describe('GetContacts', () => {
       fakeVCardProvider,
       fakeStorageProvider,
     );
+
+    await fakeJsonDBProvider.setMasterUser(5511964945942);
   });
 
   it('should be able to get contacts with type download', async () => {
@@ -47,7 +49,6 @@ describe('GetContacts', () => {
   });
 
   it('should be able to try to send file two times', async () => {
-    await fakeJsonDBProvider.setMasterUser('5511964945942');
     await fakeJsonDBProvider.setContacts(['5511964945942@c.us']);
 
     const sendFileFunction = jest
@@ -62,14 +63,14 @@ describe('GetContacts', () => {
 
   it('should be able to modify the masterUser number to perform the second sendFile attempt', async () => {
     await fakeJsonDBProvider.setContacts(['5511964945942@c.us']);
-    await fakeJsonDBProvider.setMasterUser('5511964945943');
+    await fakeJsonDBProvider.setMasterUser(5511964945943);
 
     const mockedSendFile = jest
       .spyOn(fakeWhatsappProvider, 'sendFile')
       .mockImplementation(async () => false);
 
     await listContacts.execute('sendByMessage');
-    await fakeJsonDBProvider.setMasterUser('551164945944');
+    await fakeJsonDBProvider.setMasterUser(551164945944);
     await listContacts.execute('sendByMessage');
 
     const fixedNumber1 = mockedSendFile.mock.calls[2][0];

@@ -13,9 +13,9 @@ describe('GetMasterUser', () => {
   });
 
   it('should be able to get master user', async () => {
-    await fakeJsonDBProvider.setMasterUser('5511964945942');
+    await fakeJsonDBProvider.setMasterUser(5511964945942);
     const masterUser = await showMasterUser.execute();
 
-    expect(masterUser).toBe('5511964945942');
+    expect(masterUser).toBe(5511964945942);
   });
 });

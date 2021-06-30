@@ -24,10 +24,10 @@ describe('ListAllowedUsers', () => {
   });
 
   it('should be able to list allowed users', async () => {
-    await fakeJsonDBProvider.setAllowedUsers(['5511964945942']);
+    await fakeJsonDBProvider.setAllowedUsers([5511964945942]);
     const response = await listAllowedUsersService.execute();
 
-    expect(response).toEqual(['5511964945942']);
+    expect(response).toEqual([5511964945942]);
   });
 
   it('should not be able to list allowed users if there are no allowed users', async () => {

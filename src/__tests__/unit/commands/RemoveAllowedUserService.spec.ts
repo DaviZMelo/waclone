@@ -23,21 +23,18 @@ describe('RemoveAllowedUser', () => {
   });
 
   it('should be able to remove allowed user', async () => {
-    await fakeJsonDBProvider.setAllowedUsers([
-      '5511964945942',
-      '5511964945943',
-    ]);
+    await fakeJsonDBProvider.setAllowedUsers([5511964945942, 5511964945943]);
 
-    await removeAllowedUser.execute('5511964945943');
+    await removeAllowedUser.execute(5511964945943);
 
     const allowedUsers = await fakeJsonDBProvider.getAllowedUsers();
 
-    expect(allowedUsers).toEqual(['5511964945942']);
+    expect(allowedUsers).toEqual([5511964945942]);
   });
 
   it('should not be able to remove allowed user if the informed allowed users not exists', async () => {
     await expect(
-      removeAllowedUser.execute('5511964945942'),
+      removeAllowedUser.execute(5511964945942),
     ).rejects.toBeInstanceOf(WaError);
   });
 });

@@ -30,7 +30,7 @@ describe('ListConfigs', () => {
         linkMessage: 'LinkMessage',
       },
       users: {
-        masterUser: '5511964945942',
+        masterUser: 5511964945942,
       },
       groups: {
         targetGroupId: 'targetGroupId' as IGroupIDDTO,
@@ -43,13 +43,10 @@ describe('ListConfigs', () => {
 
     expect(configs).toEqual(
       expect.objectContaining({
-        delay: expect.any(Number),
-        targetGroup: expect.any(Object),
-        hostGroup: expect.any(Object),
-        linkMessage: expect.any(String),
-        linkMode: expect.any(Boolean),
-        numberOfContactsToAddPerDelay: expect.any(Number),
-        allFilled: expect.any(Boolean),
+        cloning: expect.any(Object),
+        links: expect.any(Object),
+        users: expect.any(Object),
+        groups: expect.any(Object),
       }),
     );
   });
@@ -64,7 +61,7 @@ describe('ListConfigs', () => {
         linkMode: true,
       },
       users: {
-        masterUser: '5511964945942',
+        masterUser: 5511964945942,
       },
       groups: {
         targetGroupId: 'targetGroupId' as IGroupIDDTO,

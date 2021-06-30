@@ -4,6 +4,11 @@ import FakeJsonDBProvider from '@shared/container/providers/JSONDBProvider/fakes
 import FakeWhatsappProvider from '@shared/container/providers/WhatsappProvider/fakes/FakeWhatsappProvider';
 import FakeJobsProvider from '@shared/container/providers/JobsProvider/fakes/FakeJobsProvider';
 import LogError from '@shared/errors/LogError';
+import IGroupIDDTO from '@shared/container/providers/WhatsappProvider/dtos/IGroupIDDTO';
+import AppError from '@shared/errors/AppError';
+import ILinksDTO from '@shared/container/providers/JSONDBProvider/dtos/ILinksDTO';
+import IGroupsDTO from '@shared/container/providers/JSONDBProvider/dtos/IGroupsDTO';
+import ICloningDTO from '@shared/container/providers/JSONDBProvider/dtos/ICloningDTO';
 
 let fakeJsonDBProvider: FakeJsonDBProvider;
 let fakeWhatsappProvider: FakeWhatsappProvider;
@@ -28,6 +33,10 @@ describe('StartCloning', () => {
       links: {
         linkMode: false,
       },
+      groups: {
+        hostGroupId: 'groupId' as IGroupIDDTO,
+        targetGroupId: 'targetGroupId' as IGroupIDDTO,
+      },
       cloning: {
         cloningContactsToAddPerDelay: 1,
         cloningDelay: 10,
@@ -47,8 +56,13 @@ describe('StartCloning', () => {
 
   it('should be able to start group cloning with link mode', async () => {
     await fakeJsonDBProvider.setConfigs({
+      groups: {
+        hostGroupId: 'groupId' as IGroupIDDTO,
+        targetGroupId: 'targetGroupId' as IGroupIDDTO,
+      },
       links: {
         linkMode: true,
+        linkMessage: 'hi',
       },
       cloning: {
         cloningContactsToAddPerDelay: 1,
@@ -74,8 +88,13 @@ describe('StartCloning', () => {
 
   it('should be able to throw logError with log mode if it not possible to sendText', async () => {
     await fakeJsonDBProvider.setConfigs({
+      groups: {
+        hostGroupId: 'groupId' as IGroupIDDTO,
+        targetGroupId: 'targetGroupId' as IGroupIDDTO,
+      },
       links: {
         linkMode: true,
+        linkMessage: 'hi',
       },
       cloning: {
         cloningContactsToAddPerDelay: 1,
@@ -98,6 +117,10 @@ describe('StartCloning', () => {
       links: {
         linkMode: false,
       },
+      groups: {
+        hostGroupId: 'groupId' as IGroupIDDTO,
+        targetGroupId: 'targetGroupId' as IGroupIDDTO,
+      },
       cloning: {
         cloningContactsToAddPerDelay: 1,
         cloningDelay: 10,
@@ -112,5 +135,14 @@ describe('StartCloning', () => {
       });
 
     await expect(startCloning.execute()).rejects.toBeInstanceOf(LogError);
+  });
+
+  it('should not be able to start cloning if settings have not yet been set', async () => {
+    await fakeJsonDBProvider.setConfigs({
+      links: {} as ILinksDTO,
+      groups: {} as IGroupsDTO,
+      cloning: {} as ICloningDTO,
+    });
+    await expect(startCloning.execute()).rejects.toBeInstanceOf(AppError);
   });
 });

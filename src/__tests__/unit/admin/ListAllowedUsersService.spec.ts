@@ -12,7 +12,7 @@ describe('ListAllowedUsers', () => {
 
   it('should be able to get allowed users', async () => {
     const newAllowedUsers = await fakeJsonDBProvider.setAllowedUsers([
-      '5511964945942',
+      5511964945942,
     ]);
 
     const allowedUsers = await listAllowedUsers.execute();

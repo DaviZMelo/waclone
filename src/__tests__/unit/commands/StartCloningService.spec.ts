@@ -43,7 +43,7 @@ describe('StartCloning', () => {
         linkMode: false,
       },
       users: {
-        masterUser: 'master',
+        masterUser: 55,
       },
     } as IConfigsDTO);
   });

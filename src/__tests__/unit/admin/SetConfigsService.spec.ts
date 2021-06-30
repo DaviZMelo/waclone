@@ -31,7 +31,7 @@ describe('SetConfigs', () => {
         logMode: false,
       },
       users: {
-        masterUser: '5511964949542',
+        masterUser: 5511964949542,
       },
     } as IConfigsDTO;
 
