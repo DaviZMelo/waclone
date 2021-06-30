@@ -13,10 +13,10 @@ export default class MasterUserController {
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { masterUser } = request.body;
+    const { phone } = request.query;
     const setMasterUserService = container.resolve(SetMasterUserService);
 
-    await setMasterUserService.execute(masterUser);
+    await setMasterUserService.execute(Number(phone));
 
     return response.status(200).json();
   }
