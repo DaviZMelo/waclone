@@ -14,7 +14,8 @@
       "@modules/*": ["modules/*"],
       "@config/*": ["config/*"],
       "@shared/*": ["shared/*"],
-      "@database/*": ["database/*"]
+      "@database/*": ["database/*"],
+      "@docs/*": ["docs/*"]
     },               
     "esModuleInterop": true,                  
     "experimentalDecorators": true,        
