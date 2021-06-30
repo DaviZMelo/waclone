@@ -7,8 +7,8 @@ const groupsController = new GroupsController();
 const selectedGroupsController = new SelectedGroupsController();
 
 groupsRouter.get('/', groupsController.index);
-groupsRouter.post('/', groupsController.update);
 
+groupsRouter.post('/selected', selectedGroupsController.update);
 groupsRouter.get('/selected', selectedGroupsController.index);
 
 export default groupsRouter;
