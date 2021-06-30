@@ -19,12 +19,12 @@ export default interface IJSONDBProvider {
   setLinkMessage(message: string): Promise<void>;
   getLinkMessage(): Promise<string>;
 
-  findAllowedUser(contact: string): Promise<string>;
-  setAllowedUsers(contacts: Array<string>): Promise<Array<string>>;
-  getAllowedUsers(): Promise<Array<string>>;
+  findAllowedUser(contact: number): Promise<number>;
+  setAllowedUsers(contacts: Array<number>): Promise<Array<number>>;
+  getAllowedUsers(): Promise<Array<number>>;
 
-  addAllowedUser(contact: string): Promise<void>;
-  removeAllowedUser(contact: string): Promise<void>;
+  addAllowedUser(contact: number): Promise<void>;
+  removeAllowedUser(contact: number): Promise<void>;
 
   setContacts(contacts: Array<IContactIDDTO>): Promise<void>;
   getContacts(): Promise<Array<IContactIDDTO>>;
@@ -38,8 +38,8 @@ export default interface IJSONDBProvider {
   setLogMode(status: boolean): Promise<void>;
   getLogMode(): Promise<boolean>;
 
-  getMasterUser(): Promise<string>;
-  setMasterUser(masterUser: string): Promise<void>;
+  getMasterUser(): Promise<number>;
+  setMasterUser(masterUser: number): Promise<void>;
 
   setNumberOfContactsToAddPerDelay(
     numberOfContactsToAddPerDelay: number,

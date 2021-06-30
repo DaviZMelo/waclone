@@ -70,30 +70,30 @@ export default class LowDBProvider implements IJSONDBProvider {
     return db.get('cloning.cloningContacts').value();
   }
 
-  public async findAllowedUser(contact: string): Promise<string> {
+  public async findAllowedUser(contact: number): Promise<number> {
     const foundAllowedUser = db
       .get('users.allowedUsers')
       .value()
-      .find((allowedUser: string) => allowedUser === contact);
+      .find((allowedUser: number) => allowedUser === contact);
 
     return foundAllowedUser;
   }
 
-  public async getAllowedUsers(): Promise<Array<string>> {
+  public async getAllowedUsers(): Promise<Array<number>> {
     return db.get('users.allowedUsers').value();
   }
 
   public async setAllowedUsers(
-    contacts: Array<string>,
-  ): Promise<Array<string>> {
+    contacts: Array<number>,
+  ): Promise<Array<number>> {
     return db.set('users.allowedUsers', contacts).write();
   }
 
-  public async addAllowedUser(contact: string): Promise<void> {
+  public async addAllowedUser(contact: number): Promise<void> {
     await db.get('users').get('allowedUsers').push(contact).write();
   }
 
-  public async removeAllowedUser(contact: string): Promise<void> {
+  public async removeAllowedUser(contact: number): Promise<void> {
     await db.get('users').get('allowedUsers').pull(contact).write();
   }
 
@@ -113,11 +113,11 @@ export default class LowDBProvider implements IJSONDBProvider {
     return db.get('logsConfig.logMode').value();
   }
 
-  public async getMasterUser(): Promise<string> {
+  public async getMasterUser(): Promise<number> {
     return db.get('users.masterUser').value();
   }
 
-  public async setMasterUser(masterUser: string): Promise<void> {
+  public async setMasterUser(masterUser: number): Promise<void> {
     await db.set('users.masterUser', masterUser).write();
   }
 

@@ -1,4 +1,4 @@
 export default interface IUsersDTO {
-  masterUser: string;
-  allowedUsers: Array<string>;
+  masterUser: number;
+  allowedUsers: Array<number>;
 }

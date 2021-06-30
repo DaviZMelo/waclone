@@ -64,7 +64,7 @@ export default class FakeJsonDBProvider implements IJSONDBProvider {
     return this.fakeDB.cloning.cloningContacts;
   }
 
-  public async findAllowedUser(contact: string): Promise<string> {
+  public async findAllowedUser(contact: number): Promise<number> {
     const foundAllowedUser = this.fakeDB.users.allowedUsers.find(
       allowedUser => allowedUser === contact,
     );
@@ -72,22 +72,22 @@ export default class FakeJsonDBProvider implements IJSONDBProvider {
     return foundAllowedUser;
   }
 
-  public async getAllowedUsers(): Promise<Array<string>> {
+  public async getAllowedUsers(): Promise<Array<number>> {
     return this.fakeDB.users.allowedUsers;
   }
 
-  public async addAllowedUser(allowedUser: string): Promise<void> {
+  public async addAllowedUser(allowedUser: number): Promise<void> {
     this.fakeDB.users.allowedUsers.push(allowedUser);
   }
 
   public async setAllowedUsers(
-    contacts: Array<string>,
-  ): Promise<Array<string>> {
+    contacts: Array<number>,
+  ): Promise<Array<number>> {
     this.fakeDB.users.allowedUsers = contacts;
     return this.fakeDB.users.allowedUsers;
   }
 
-  public async removeAllowedUser(contact: string): Promise<void> {
+  public async removeAllowedUser(contact: number): Promise<void> {
     const newArray = this.fakeDB.users.allowedUsers.filter(
       allowedUser => allowedUser !== contact,
     );
@@ -110,11 +110,11 @@ export default class FakeJsonDBProvider implements IJSONDBProvider {
     return this.fakeDB.logsConfigs.logMode;
   }
 
-  public async getMasterUser(): Promise<string> {
+  public async getMasterUser(): Promise<number> {
     return this.fakeDB.users.masterUser;
   }
 
-  public async setMasterUser(masterUser: string): Promise<void> {
+  public async setMasterUser(masterUser: number): Promise<void> {
     this.fakeDB.users.masterUser = masterUser;
   }
 
