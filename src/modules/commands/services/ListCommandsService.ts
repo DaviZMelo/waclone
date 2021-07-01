@@ -13,7 +13,7 @@ export default class HelpCommandService {
 🛡️    *Comandos administrativos*
 
 +adicionarpermissao (número) - Concede o acesso de um número ao bot.
-  *Exemplo*:  _+darpermissao 11964945942_
+  *Exemplo*:  _+adicionarpermissao 11964945942_
 
 +removerpermissao (número) - Remove o acesso de um número ao bot.
   *Exemplo*:  _+removerpermissao 11964945942_
@@ -27,7 +27,7 @@ export default class HelpCommandService {
   *Exemplo*:  _+ativar
 
 +desativar - Desativa a adição de membros.
-  *Exemplo*:  _+ativar
+  *Exemplo*:  _+desativar
 
 +grupoanfitriao - Digite esse comando no grupo onde serão colocados os membros. O bot precisa estar no grupo e ser administrador.
   *Exemplo*:  _+grupoanfitriao_
