@@ -8,7 +8,7 @@ export default class ListAllowedUsersService {
     private jsonDBProvider: IJSONDBProvider,
   ) {}
 
-  public async execute(): Promise<Array<string>> {
+  public async execute(): Promise<Array<number>> {
     const allowedUsers = await this.jsonDBProvider.getAllowedUsers();
 
     return allowedUsers;

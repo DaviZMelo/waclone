@@ -1,20 +1,9 @@
-import IGroupIDDTO from '@shared/container/providers/WhatsappProvider/dtos/IGroupIDDTO';
 import IJSONDBProvider from '@shared/container/providers/JSONDBProvider/models/IJSONDBProvider';
 import { inject, injectable } from 'tsyringe';
 import IWhatsappProvider from '@shared/container/providers/WhatsappProvider/models/IWhatsappProvider';
+import IConfigsDTO from '@shared/container/providers/JSONDBProvider/dtos/IConfigsDTO';
 
-interface IGroupInfo {
-  id: IGroupIDDTO;
-  title: string;
-}
-
-interface IConfigs {
-  delay: number;
-  targetGroup: IGroupInfo;
-  hostGroup: IGroupInfo;
-  linkMessage: string;
-  linkMode: boolean;
-  numberOfContactsToAddPerDelay: number;
+interface IConfigs extends IConfigsDTO {
   allFilled: boolean;
 }
 
@@ -31,20 +20,8 @@ export default class ListConfigsService {
   public async execute(): Promise<IConfigs> {
     let allFilled = false;
 
-    const {
-      cloning,
-      groups,
-      links,
-      users,
-    } = await this.jsonDBProvider.getConfigs();
-
-    const {
-      title: targetGroupTitle,
-    } = await this.whatsappProvider.getGroupInfo(groups.targetGroupId);
-
-    const { title: hostGroupTitle } = await this.whatsappProvider.getGroupInfo(
-      groups.hostGroupId,
-    );
+    const { cloning, groups, links, users } =
+      await this.jsonDBProvider.getConfigs();
 
     if (
       cloning.cloningDelay &&
@@ -65,18 +42,10 @@ export default class ListConfigsService {
     }
 
     const configs = {
-      delay: cloning.cloningDelay,
-      targetGroup: {
-        id: groups.targetGroupId,
-        title: targetGroupTitle,
-      },
-      hostGroup: {
-        id: groups.hostGroupId,
-        title: hostGroupTitle,
-      },
-      linkMessage: links.linkMessage,
-      linkMode: links.linkMode,
-      numberOfContactsToAddPerDelay: cloning.cloningContactsToAddPerDelay,
+      cloning,
+      groups,
+      links,
+      users,
       allFilled,
     };
 

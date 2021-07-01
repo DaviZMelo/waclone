@@ -17,8 +17,8 @@ export default class AddAllowedUser {
     private whatsappProvider: IWhatsappProvider,
   ) {}
 
-  public async execute(contact: string): Promise<void> {
-    if (contact.length < 10 || !Number(contact))
+  public async execute(contact: number): Promise<void> {
+    if (contact.toString().length < 10 || !Number(contact))
       throw new WaError(this.messageTemplate.errorMessage('Telefone inválido'));
 
     const foundAllowedUser = await this.jsonDBProvider.findAllowedUser(contact);

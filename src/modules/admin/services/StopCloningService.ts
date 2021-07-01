@@ -21,7 +21,7 @@ export default class StopCloningService {
     const jobs = await this.jobsProvider.getJobs();
 
     if (jobs.length === 0) {
-      throw new AppError('No cloning active');
+      throw new AppError('There is no group cloning running', 409);
     }
 
     await this.jobsProvider.cancelAllJobs();

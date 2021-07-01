@@ -9,23 +9,26 @@ export default class SetAllowedUsersService {
     private jsonDBProvider: IJSONDBProvider,
   ) {}
 
-  public async execute(newAllowedUsers: Array<string>): Promise<Array<string>> {
-    const checkForDuplicateValuesInArray = (arrayToCheck: Array<string>) => {
+  public async execute(newAllowedUsers: Array<number>): Promise<Array<number>> {
+    const checkForDuplicateValuesInArray = (arrayToCheck: Array<number>) => {
       return new Set(arrayToCheck).size !== arrayToCheck.length;
     };
 
     const hasDuplicateNumbers = checkForDuplicateValuesInArray(newAllowedUsers);
 
     if (hasDuplicateNumbers) {
-      throw new AppError('Duplicate numbers is not allowed');
+      throw new AppError('Duplicate numbers is not allowed', 422);
     }
 
     if (newAllowedUsers.length >= 3) {
-      throw new AppError('Maximum users reached', 400);
+      throw new AppError('Maximum users limit reached', 406);
     }
 
     newAllowedUsers.map(newAllowedUser => {
-      if (Number.isNaN(newAllowedUser) || newAllowedUser.length !== 13) {
+      if (
+        Number.isNaN(newAllowedUser) ||
+        newAllowedUser.toString().length !== 13
+      ) {
         throw new AppError('Invalid phone number', 400);
       }
 

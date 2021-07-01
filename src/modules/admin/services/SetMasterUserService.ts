@@ -9,22 +9,22 @@ export default class ListSelectedGroupsService {
     private jsonDBProvider: IJSONDBProvider,
   ) {}
 
-  public async execute(newMasterUser: string): Promise<string> {
+  public async execute(masterUser: number): Promise<number> {
     const allowedUsers = await this.jsonDBProvider.getAllowedUsers();
 
     const isMasterUserAllowedUser = allowedUsers.find(
-      allowedUser => allowedUser === newMasterUser,
+      allowedUser => allowedUser === masterUser,
     );
 
     if (!isMasterUserAllowedUser) {
       throw new AppError(
         'Informed master user is not an existing allowed user',
-        400,
+        406,
       );
     }
 
-    await this.jsonDBProvider.setMasterUser(newMasterUser);
+    await this.jsonDBProvider.setMasterUser(masterUser);
 
-    return newMasterUser;
+    return masterUser;
   }
 }

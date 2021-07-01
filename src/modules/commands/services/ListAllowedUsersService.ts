@@ -17,7 +17,7 @@ export default class AddUserPermissionService {
     private whatsappProvider: IWhatsappProvider,
   ) {}
 
-  public async execute(): Promise<Array<string>> {
+  public async execute(): Promise<Array<number>> {
     const allowedUsers = await this.jsonDBProvider.getAllowedUsers();
 
     if (!allowedUsers || allowedUsers.length < 1)

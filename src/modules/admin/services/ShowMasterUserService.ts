@@ -8,7 +8,7 @@ export default class ShowMasterUserService {
     private jsonDBProvider: IJSONDBProvider,
   ) {}
 
-  public async execute(): Promise<string> {
+  public async execute(): Promise<number> {
     const masterUser = await this.jsonDBProvider.getMasterUser();
 
     return masterUser;

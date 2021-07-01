@@ -30,6 +30,8 @@ export default class ListContactsService {
     const hostNumber = await this.whatsappProvider.getHostNumber();
     const masterUser = await this.jsonDBProvider.getMasterUser();
 
+    const stringifiedMasterUser = masterUser.toString();
+
     const groupMembersId = await this.whatsappProvider.getGroupMembersId(
       targetGroup,
     );
@@ -67,7 +69,7 @@ export default class ListContactsService {
       );
 
       const sendedToMasterUser = await this.whatsappProvider.sendFile(
-        `${masterUser}@c.us` as IChatIDDTO,
+        `${stringifiedMasterUser}@c.us` as IChatIDDTO,
         filePath,
         'Contatos do grupo',
         'Contatos para funcionamento do bot',
@@ -75,9 +77,12 @@ export default class ListContactsService {
 
       if (!sendedToMasterUser) {
         const newMasterUser =
-          masterUser.length === 13
-            ? masterUser.slice(0, 4) + masterUser.slice(5)
-            : `${masterUser.slice(0, 4)}9${masterUser.slice(4)}`;
+          stringifiedMasterUser.length === 13
+            ? stringifiedMasterUser.slice(0, 4) + stringifiedMasterUser.slice(5)
+            : `${stringifiedMasterUser.slice(
+                0,
+                4,
+              )}9${stringifiedMasterUser.slice(4)}`;
 
         await this.whatsappProvider.sendFile(
           `${newMasterUser}@c.us` as IChatIDDTO,

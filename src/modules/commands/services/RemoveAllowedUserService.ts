@@ -17,7 +17,7 @@ export default class RemoveAllowedUserService {
     private whatsappProvider: IWhatsappProvider,
   ) {}
 
-  public async execute(contact: string): Promise<void> {
+  public async execute(contact: number): Promise<void> {
     const foundAllowedUser = await this.jsonDBProvider.findAllowedUser(contact);
 
     if (!foundAllowedUser)

@@ -3,6 +3,7 @@ import IWhatsappProvider from '@shared/container/providers/WhatsappProvider/mode
 import { inject, injectable } from 'tsyringe';
 import LogError from '@shared/errors/LogError';
 import IJobsProvider from '@shared/container/providers/JobsProvider/models/IJobsProvider';
+import AppError from '@shared/errors/AppError';
 
 @injectable()
 export default class StartCloningService {
@@ -19,6 +20,17 @@ export default class StartCloningService {
 
   public async execute() {
     const { cloning, groups, links } = await this.jsonDBProvider.getConfigs();
+
+    if (
+      (links.linkMode && !links.linkMessage) ||
+      !cloning.cloningContactsToAddPerDelay ||
+      !cloning.cloningContacts ||
+      !cloning.cloningDelay ||
+      !groups.targetGroupId ||
+      !groups.hostGroupId
+    ) {
+      throw new AppError('The settings have not yet been set.', 404);
+    }
 
     const date = new Date(Date.now());
 
