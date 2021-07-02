@@ -3,7 +3,7 @@
   
   # WaClone API
   
-  An API made for the purpose of cloning Whatsapp groups.
+  An API/Bot made for the purpose of cloning Whatsapp groups.
   
   <p align="center">
     <a href="https://davizmelo.github.io/waclone-api/">📖 Documentation</a> •
