@@ -1,6 +1,6 @@
 {
   "users": {
-    "masterUser": "",
+    "masterUser": 0,
     "allowedUsers": []
   },
   "groups": {
@@ -9,13 +9,14 @@
     "targetGroupLink": ""
   },
   "links": {
-    "linkMode": false,
-    "linkMessage": ""
+    "linkMode": true,
+    "linkMessage": "teste"
   },
   "cloning": {
     "cloningDelay": 10,
     "cloningContactsToAddPerDelay": 10,
-    "cloningContacts": []
+    "cloningContacts": [],
+    "delay": 30
   },
   "logsConfig": {
     "logMode": false,
