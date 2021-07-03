@@ -9,7 +9,7 @@ session.data.json
 yarn.lock
 **.data.json
 **.node-persist**
-db.json
 coverage
 logs
+src/database/db.json
 .env
