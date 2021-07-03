@@ -11,5 +11,5 @@ yarn.lock
 **.node-persist**
 coverage
 logs
-src/database/db.json
 .env
+src/database/db.json

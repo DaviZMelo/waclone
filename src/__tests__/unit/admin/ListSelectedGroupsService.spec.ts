@@ -20,8 +20,8 @@ describe('ListSelectedGroups', () => {
     const selectedGroups = await listSelectedGroups.execute();
 
     expect(selectedGroups).toEqual({
-      selectedTargetGroupId: 'targetGroupId',
-      selectedHostGroupId: 'hostGroupId',
+      targetGroupId: 'targetGroupId',
+      hostGroupId: 'hostGroupId',
     });
   });
 });
