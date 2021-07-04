@@ -1,3 +1,4 @@
+import '../schemas/schema.json';
 import lowdb from 'lowdb';
 import fs from 'fs';
 import FileSync from 'lowdb/adapters/FileSync';
