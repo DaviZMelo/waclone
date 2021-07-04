@@ -48,8 +48,6 @@ export default class WaAutomateProvider implements IWhatsappProvider {
     );
 
     await fs.promises.unlink(sessionDataPath);
-
-    this.createInstance();
   }
 
   private start(client: Client) {
