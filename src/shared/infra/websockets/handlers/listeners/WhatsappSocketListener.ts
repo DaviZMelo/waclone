@@ -12,8 +12,8 @@ export default class WhatsappSocketListener {
 
   public execute(io: Server) {
     io.on('connection', (socket: Socket) => {
-      socket.on('front:logout', () => {
-        this.whatsappProvider.logout();
+      socket.on('front:logout', async () => {
+        await this.whatsappProvider.logout();
       });
     });
   }

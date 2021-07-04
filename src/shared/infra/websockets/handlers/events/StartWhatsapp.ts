@@ -13,8 +13,12 @@ export default class StartWhatsapp {
   ) {}
 
   public async execute(io: Server) {
+    container.resolve(HandleWhatsappEvent).execute(io);
+
     await this.whatsappProvider.createInstance();
+
     const myPhoneNumber = await this.whatsappProvider.getHostNumber();
+    container.resolve(WhatsappSocketListener).execute(io);
 
     container.registerInstance<IWhatsappProvider>(
       'WhatsappProvider',
@@ -22,8 +26,6 @@ export default class StartWhatsapp {
     );
 
     await container.resolve(HandleWhatsappMessage).execute();
-    container.resolve(HandleWhatsappEvent).execute(io);
-    container.resolve(WhatsappSocketListener).execute(io);
     io.emit('wa:signin', myPhoneNumber);
 
     return true;

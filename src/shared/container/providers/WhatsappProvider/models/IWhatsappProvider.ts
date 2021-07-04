@@ -11,7 +11,7 @@ import IMessageIDDTO from '../dtos/IMessageIDDTO';
 export default interface IWhatsappProvider {
   message: IMessageDTO;
   createInstance(): Promise<Client | IWhatsappProvider>;
-  logout(): void;
+  logout(): Promise<void>;
 
   captureEvents(eventCallback: ICaptureEventCallbackDTO): void;
   onMessage(messageCallback: (message: Message) => void): void;
