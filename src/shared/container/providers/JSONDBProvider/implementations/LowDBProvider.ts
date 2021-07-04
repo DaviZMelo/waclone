@@ -1,7 +1,7 @@
 import lowdb from 'lowdb';
+import fs from 'fs';
 import FileSync from 'lowdb/adapters/FileSync';
 import path from 'path';
-import '@database/db.json';
 import IContactIDDTO from '../../WhatsappProvider/dtos/IContactIDDTO';
 import IGroupIDDTO from '../../WhatsappProvider/dtos/IGroupIDDTO';
 import IConfigsDTO from '../dtos/IConfigsDTO';
@@ -17,6 +17,13 @@ const dbFile = path.resolve(
   '../',
   `database/db.json`,
 );
+
+const dbFileExists = fs.existsSync(dbFile);
+const dbSchema = fs.readFileSync(
+  path.resolve(__dirname, '../', 'schemas/schema.json'),
+);
+
+if (!dbFileExists) fs.writeFileSync(dbFile, dbSchema);
 
 const adapter = new FileSync<IConfigsDTO>(dbFile);
 const db = lowdb(adapter);
