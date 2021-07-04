@@ -3,6 +3,8 @@ import app from './app';
 
 startSocket(app);
 
-app.listen(4000, () => {
-  console.log('Listening the port 4000');
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+  console.log(`Listening the port ${port}`);
 });
