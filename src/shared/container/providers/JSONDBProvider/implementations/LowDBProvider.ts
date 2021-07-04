@@ -23,7 +23,12 @@ const dbSchema = fs.readFileSync(
   path.resolve(__dirname, '../', 'schemas/schema.json'),
 );
 
-if (!dbFileExists) fs.writeFileSync(dbFile, dbSchema);
+if (!dbFileExists) {
+  fs.mkdirSync(
+    path.resolve(__dirname, '../', '../', '../', '../', '../', 'database'),
+  );
+  fs.writeFileSync(dbFile, dbSchema);
+}
 
 const adapter = new FileSync<IConfigsDTO>(dbFile);
 const db = lowdb(adapter);
